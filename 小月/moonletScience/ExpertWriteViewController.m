@@ -1,0 +1,365 @@
+//
+//  ExpertWriteViewController.m
+//  moonletScience
+//
+//  Created by Zhuge_Su on 16/4/5.
+//  Copyright © 2016年 moonletScience. All rights reserved.
+//
+
+#import "ExpertWriteViewController.h"
+#import "PulisherViewController.h"
+#import "PersonInfoViewController.h"
+#import "InfoRecordTableViewCell.h"
+#import "ReportViewController.h"
+
+@interface ExpertWriteViewController ()<UITableViewDataSource,UITableViewDelegate>
+{
+    UIButton *_careBtn;
+    UILabel *_numLable;
+    NSArray *_dataArray;
+    UIView *_BgView;
+    UIView *_publishView;
+    NSArray *_nameArray;
+}
+
+@end
+
+@implementation ExpertWriteViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    self.are = [[NSMutableArray alloc]initWithCapacity:0];
+    self.view.backgroundColor = [UIColor whiteColor];
+    _nameArray = @[@"四月",@"三月",@"两月",@"一月",@"2015年"];
+    [self createNavBar];
+    [self creatBackgView];
+    [self creatTableView];
+    
+    _flagArrar[0] = YES;
+}
+
+
+
+-(void)createNavBar
+{
+#pragma mark - 修改状态栏的简便方法
+    //状态栏设置
+    UIView *statusBarView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, 20)];
+    statusBarView.backgroundColor=[UIColor blackColor];
+    [self.view addSubview:statusBarView];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    
+    //导航栏图片
+    UIImageView *navBar = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, WIDTH, 50)];
+    navBar.userInteractionEnabled = YES;
+    //navBar.image = [UIImage imageNamed:@"navbg.png"];
+    navBar.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:navBar];
+    
+    //导航栏字体
+    UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(WIDTH / 2 - 50 , 10, 100, 30)];
+    title.text = @"专家团";
+    title.textColor = TEXTCOLOR;
+    title.font = [UIFont systemFontOfSize:18];
+    title.textAlignment = NSTextAlignmentCenter;
+    [navBar addSubview:title];
+    
+    //导航返回键
+    UIButton *fanHuiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [fanHuiBtn setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    fanHuiBtn.frame = CGRectMake(0, 0, 100, 50);
+    [fanHuiBtn setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 60)];
+    [fanHuiBtn addTarget:self action:@selector(fanhui) forControlEvents:UIControlEventTouchUpInside];
+    //fanHuiBtn.backgroundColor = [UIColor blackColor];
+    [navBar addSubview:fanHuiBtn];
+    
+    //发布按钮
+    UIButton *writeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    writeBtn.frame = CGRectMake(WIDTH-50, 13, 20, 20);
+    //writeBtn.backgroundColor = [UIColor redColor];
+    [writeBtn setImage:[UIImage imageNamed:@"fatie.png"] forState:UIControlStateNormal];
+    //[writeBtn setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 35, 35)];
+    [writeBtn addTarget:self action:@selector(publish) forControlEvents:UIControlEventTouchUpInside];
+    [navBar addSubview:writeBtn];
+}
+
+- (void)fanhui
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)publish
+{
+    PulisherViewController *publish = [[PulisherViewController alloc]init];
+    [self.navigationController pushViewController:publish animated:YES];
+}
+
+#pragma mark - 背景视图
+- (void)creatBackgView{
+    //背景
+    _BgView = [[UIView alloc]initWithFrame:CGRectMake(0,70, WIDTH, HEIGHT/2-80)];
+    _BgView.backgroundColor = [UIColor grayColor];
+    [self.view addSubview:_BgView];
+    
+    //左上角label
+    NSArray *arr = @[@"宁波车宝宝公司",@"汽车行业",@"38岁 男",@"总经理"];
+    for (int i = 0; i < 4; i++) {
+        UILabel *perInfo = [[UILabel alloc]initWithFrame:CGRectMake(10, 12*(i+1), 150, 12)];
+        perInfo.text = arr[i];
+        perInfo.textColor = TEXTCOLOR;
+        perInfo.font = [UIFont systemFontOfSize:12];
+        //        perInfo.textAlignment = NSTextAlignmentCenter;
+        [_BgView addSubview:perInfo];
+    }
+    
+    
+    //右下角头像
+    UIButton *ImageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    ImageBtn.frame = CGRectMake(WIDTH-50, HEIGHT/2-80-30-20, 40, 40);
+//    ImageBtn.backgroundColor = [UIColor yellowColor];
+    [ImageBtn setBackgroundImage:[UIImage imageNamed:@"add_head_photo.png"] forState:UIControlStateNormal];
+    ImageBtn.adjustsImageWhenHighlighted = NO;
+    [ImageBtn addTarget:self action:@selector(InfoBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [_BgView addSubview:ImageBtn];
+    ImageBtn.layer.cornerRadius =2;
+    ImageBtn.clipsToBounds =YES;
+    UIButton *signBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [signBtn setBackgroundImage:[UIImage imageNamed:@"expert_icon.png"] forState:UIControlStateNormal];
+    signBtn.frame = CGRectMake(WIDTH-50, HEIGHT/2-80-74+5+44, 15, 15);
+    signBtn.layer.cornerRadius =1;
+    signBtn.adjustsImageWhenHighlighted = NO;
+    signBtn.clipsToBounds =YES;
+    [_BgView addSubview:signBtn];
+    
+    
+    //左下角推荐指数
+    UILabel *tuiLable = [[UILabel alloc]initWithFrame:CGRectMake(0, HEIGHT/2-80-10-20, 100, 20)];
+    tuiLable.backgroundColor = GREENCOLOR;
+    tuiLable.layer.cornerRadius = 3;
+    tuiLable.text = @"推荐指数 300";
+    tuiLable.textColor = WHITECOLOR;
+    tuiLable.textAlignment = NSTextAlignmentCenter;
+    tuiLable.font = [UIFont systemFontOfSize:13];
+    [_BgView addSubview:tuiLable];
+    
+    //右下方关注数
+    _numLable = [[UILabel alloc]initWithFrame:CGRectMake(WIDTH-50-10-30, HEIGHT/2-80-10-20, 30, 20)];
+    _numLable.backgroundColor = [UIColor clearColor];
+    _numLable.text = @"255";
+    _numLable.textColor = WHITECOLOR;
+    _numLable.textAlignment = NSTextAlignmentCenter;
+    _numLable.font = [UIFont systemFontOfSize:10];
+    [_BgView addSubview:_numLable];
+    
+    //右下方关注
+    _careBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    _careBtn.frame = CGRectMake(WIDTH-50-10-30-40, HEIGHT/2-80-10-20, 40, 20);
+    _careBtn.backgroundColor = REDCOLOR;
+    _careBtn.layer.cornerRadius = 2;
+    [_careBtn setTitle:@"关注" forState:UIControlStateNormal];
+    [_careBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    _careBtn.selected = YES;
+    _careBtn.titleLabel.font = [UIFont systemFontOfSize:10];
+    [_careBtn addTarget:self action:@selector(careBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_BgView addSubview:_careBtn];
+}
+
+#pragma mark - tableView 展示以往个人发帖记录
+- (void)creatTableView{
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, HEIGHT/2-10, WIDTH, HEIGHT/2+10)];
+    self.tableView.separatorStyle = NO;
+//    _tableView.backgroundColor = BGCOLOR;
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    [self.view addSubview:self.tableView];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return _nameArray.count;
+}
+
+- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, WIDTH, 40)];
+    bgView.backgroundColor = WHITECOLOR;
+    
+    UILabel *monthLab = [[UILabel alloc]initWithFrame:CGRectMake(10,10, 60, 20)];
+    monthLab.text = _nameArray[section];
+    monthLab.font = [UIFont systemFontOfSize:12];
+    monthLab.textColor = TEXTCOLOR;
+    [bgView addSubview:monthLab];
+    
+    UIImageView *arrow = [[UIImageView alloc]initWithFrame:CGRectMake(WIDTH-25, 12, 15, 15)];
+    [arrow setImage:[UIImage imageNamed:@"liebiao_jiantou.png"]];
+//    if (_flagArrar[section]) {
+//        arrow.transform = CGAffineTransformMakeRotation(M_PI_2);
+//    }else{
+//        arrow.transform = CGAffineTransformIdentity;
+//    }
+    [bgView addSubview:arrow];
+
+
+    UIButton *clickBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    clickBtn.frame = CGRectMake(5, 5, WIDTH, 30);
+    clickBtn.clipsToBounds = YES;
+    clickBtn.tag = 70 + section;
+    clickBtn.adjustsImageWhenHighlighted = NO;
+    [clickBtn addTarget:self action:@selector(clickBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [bgView addSubview:clickBtn];
+    //给按钮加一个白色的板框
+    clickBtn.layer.borderColor = LINECOLOR.CGColor;
+    clickBtn.layer.borderWidth = 1.0f;
+    //给按钮设置弧度,这里将按钮变成了圆形
+    clickBtn.layer.cornerRadius = 3;
+    clickBtn.layer.masksToBounds = YES;
+    
+
+    return bgView;
+}
+
+
+- (void)clickBtnClick:(UIButton *)sender{
+//    for (int i = 0; i < 100; i++) {
+//        if (i == sender.tag - 70) {
+//            _flagArrar[i] = !_flagArrar[i];
+//        }
+//    }
+    _flagArrar[sender.tag-70] = !_flagArrar[sender.tag-70];
+    
+    [self.tableView reloadData];
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 40;
+}
+
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if (_flagArrar[section]) {
+            return 4;
+        }else{
+            return 0;
+        }
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 140;
+}
+
+- (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *cellID = @"InfoRecordTableViewCell";
+    InfoRecordTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil) {
+        cell = [[[NSBundle mainBundle]loadNibNamed:cellID owner:self options:nil]lastObject];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    [cell.pinglunBtn setTitle:@"100" forState:UIControlStateNormal];
+    [cell.dianzanBtn setTitle:@"1722434" forState:UIControlStateNormal];
+    cell.timeLab.text = @"5分钟前";
+    cell.moonNunLab.text = @"123333";
+    
+    [cell.myBtn addTarget:self action:@selector(InfoBtnClick) forControlEvents:UIControlEventTouchUpInside];
+
+    [cell.shareBtn addTarget:self action:@selector(shareBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [cell.dianzanBtn addTarget:self action:@selector(dianzanBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [cell.reportBtn addTarget:self action:@selector(reportBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    return cell;
+}
+
+
+- (void)shareBtnClick{
+
+}
+
+- (void)dianzanBtnClick{
+
+}
+
+- (void)reportBtnClick{
+    ReportViewController *report = [[ReportViewController alloc]init];
+    [self.navigationController pushViewController:report animated:YES];
+}
+
+//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+//    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 130)];
+////    footView.backgroundColor = [UIColor yellowColor];
+//    [_tableView addSubview:footView];
+//    
+//    
+//    NSArray *monthArr = @[@"3月",@"2月",@"1月",@"2015年"];
+//    for (int i = 0; i < 4; i++) {
+//        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+//        btn.frame = CGRectMake(10, 10+30*i, WIDTH-20, 25);
+//        //        btn.backgroundColor = WHITECOLOR;
+//        //        btn.layer.cornerRadius = 2;
+//        //        btn.layer.shadowOffset = CGSizeMake(1, 1);
+//        //        btn.layer.shadowOpacity= 0.5;
+//        //        btn.layer.shadowColor = [UIColor blackColor].CGColor;
+//        
+//        //给按钮加一个白色的板框
+//        btn.layer.borderColor = SLIVERYCOLOR.CGColor;
+//        btn.layer.borderWidth = 1.0f;
+//        //给按钮设置弧度,这里将按钮变成了圆形
+//        btn.layer.cornerRadius = 3;
+//        btn.layer.masksToBounds = YES;
+//        //        btn.clipsToBounds = YES;
+//        [footView addSubview:btn];
+//        
+//        UILabel *monthLab = [[UILabel alloc]initWithFrame:CGRectMake(10, 3, 60, 20)];
+//        monthLab.text = monthArr[i];
+//        monthLab.font = [UIFont systemFontOfSize:12];
+//        monthLab.textColor = TEXTCOLOR;
+//        [btn addSubview:monthLab];
+//        
+//        UIButton *spreadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//        spreadBtn.frame = CGRectMake(WIDTH-20-10-10, 7, 10, 10);
+//        spreadBtn.layer.cornerRadius = 5;
+//        spreadBtn.clipsToBounds = YES;
+//        [spreadBtn setBackgroundImage:[UIImage imageNamed:@"liebiao_jiantou.png"] forState:UIControlStateNormal];
+//        [btn addSubview:spreadBtn];
+//        
+//    }
+//
+//    
+//    
+//    return footView;
+//}
+
+
+
+
+- (void)careBtnClick:(UIButton *)sender{
+    sender.selected = !sender.selected;
+    if (sender.selected == NO) {
+        _careBtn.backgroundColor = BGCOLOR;
+        [_careBtn setTitle:@"已关注" forState:UIControlStateNormal];
+        _numLable.text = @"256";
+    }else{
+        _careBtn.backgroundColor = REDCOLOR;
+        [_careBtn setTitle:@"关注" forState:UIControlStateNormal];
+        _numLable.text = @"255";
+    }
+}
+
+- (void)InfoBtnClick{
+    PersonInfoViewController *person = [[PersonInfoViewController alloc]init];
+    [self.navigationController pushViewController:person animated:YES];
+}
+
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

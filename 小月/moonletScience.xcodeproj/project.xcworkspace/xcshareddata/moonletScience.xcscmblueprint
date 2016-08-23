@@ -1,0 +1,24 @@
+{
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "1ca57d9c-3314-724f-b7a6-446b0c66a72c++5014" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "1ca57d9c-3314-724f-b7a6-446b0c66a72c++5014" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "B2F4198C-3D76-4AA5-8A98-E3CC60E90822",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "1ca57d9c-3314-724f-b7a6-446b0c66a72c++5014" : "MoonletScience_Su\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "moonletScience",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "moonletScience.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/121.40.224.171\/svn\/nbcbb",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1ca57d9c-3314-724f-b7a6-446b0c66a72c++5014"
+    }
+  ]
+}

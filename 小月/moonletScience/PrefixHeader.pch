@@ -1,0 +1,200 @@
+//
+//  PrefixHeader.pch
+//  moonletScience
+//
+//  Created by 苏 on 16/4/2.
+//  Copyright © 2016年 moonletScience. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#import "HLF-PrefixHeader.pch"
+
+#import "MJRefresh.h"
+#import "UIImageView+WebCache.h"
+#import "UpYun.h"
+
+#import "ZYHTTPRequest.h"
+#import "AFNetworking.h"
+#import "AFHTTPRequestOperation.h"
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
+#import <AVFoundation/AVFoundation.h>
+#import "ZBarSDK.h"
+
+#import "session.h"
+#import "BBFlashCtntLabel.h"
+
+#pragma mark - size
+#define WIDTH [[UIScreen mainScreen] bounds].size.width
+#define HEIGHT [[UIScreen mainScreen] bounds].size.height
+
+#pragma mark - color
+#define RGBCOLOR(r,g,b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1]
+
+#define TEXTCOLOR [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]
+#define BGCOLOR [UIColor colorWithRed:0/255.0 green:96/255.0 blue:156/255.0 alpha:1.0]
+#define GREENCOLOR [UIColor colorWithRed:106/255.0 green:195/255.0 blue:53/255.0 alpha:1.0]
+//别删这个TEXTGRAYCOLOR
+#define TEXTGRAYCOLOR [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]
+#define TEXTTINTCOLOR [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0]
+
+#define DARKCOLOR [UIColor colorWithRed:208/255.0 green:208/255.0 blue:208/255.0 alpha:1.0]
+#define BGCOLOR [UIColor colorWithRed:0/255.0 green:96/255.0 blue:156/255.0 alpha:1.0]
+#define GREENCOLOR [UIColor colorWithRed:106/255.0 green:195/255.0 blue:53/255.0 alpha:1.0]
+#define SLIVERYCOLOR [UIColor colorWithRed:240/255.0 green:240/255.0 blue:241/255.0 alpha:1.0]
+#define LINECOLOR [UIColor colorWithRed:215/255.0 green:216/255.0 blue:221/255.0 alpha:1.0]
+#define WHITECOLOR [UIColor whiteColor]
+#define REDCOLOR [UIColor colorWithRed:236/255.0 green:58/255.0 blue:52/255.0 alpha:1.0]
+#define CAOGREENCOLOR [UIColor colorWithRed:105/255.0 green:184/255.0 blue:59/255.0 alpha:1.0]
+#define GRAYCOLOR [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0]
+
+//#define LOCALHOST @"http://appapi.seeleep.com/"
+#define LOCALHOST @"http://121.196.232.220:8711/"
+
+#pragma 注册
+#define REGISTER_URL(phoneNum,psw) [NSString stringWithFormat:@"%@user/reg?name=%@&pass=%@",LOCALHOST,phoneNum,psw]
+
+#pragma 登录
+#define LOGIN_URL(phoneNum,psw) [NSString stringWithFormat:@"%@user/login?name=%@&pass=%@",LOCALHOST,phoneNum,psw]
+
+#pragma 上传头像
+#define updateHeaderImage   [NSString stringWithFormat:@"%@media/upload",LOCALHOST]
+
+#pragma 获取用户自己信息
+#define PERSONINFO_URL(token,userId) [NSString stringWithFormat:@"%@user/findByUserId?token=%@&userId=%@",LOCALHOST,token,userId]
+
+#pragma 修改用户信息
+#define SETTING_PERSONINFO_URL(token,kind,info) [NSString stringWithFormat:@"%@user/update?token=%@&%@=%@",LOCALHOST,token,kind,info]
+
+#pragma 用户添加设备
+#define ADD_DEVICE_URL(token,deviceId,sn) [NSString stringWithFormat:@"%@user/addDevice?token=%@&deviceId=%@&sn=%@",LOCALHOST,token,deviceId,sn]
+
+#pragma 获取我的设备
+#define MY_DIVICE(token) [NSString stringWithFormat:@"%@user/findAllDevice?token=%@",LOCALHOST,token]
+
+#pragma 上传医师资格证
+#define USERAUTH_CREATE [NSString stringWithFormat:@"%@userAuth/save",LOCALHOST]
+
+#pragma 获取专家认证图片
+#define findByToken(token)   [NSString stringWithFormat:@"%@userAuth/findByToken?token=%@",LOCALHOST,token]
+
+#pragma 更换工作证
+#define UPDATE_USERAUTH [NSString stringWithFormat:@"%@userAuth/update",LOCALHOST]
+
+#pragma 解除专家认证
+#define DELETE_USERAUTH(token)   [NSString stringWithFormat:@"%@userAuth/delete?token=%@",LOCALHOST,token]
+
+#pragma 发布话题
+#define CREATE_ARTICLE(title,detail,marks)   [NSString stringWithFormat:@"%@article/save?title=%@&ct=%@&tag=%@",LOCALHOST,title,detail,marks]
+
+#pragma 获取所有文章
+#define FINDALL_ARTICLE(token,userId,cat,tag,offset)   [NSString stringWithFormat:@"%@article/findAll?token=%@&userId=%@&cat=%@&tag=%@&offset=%@",LOCALHOST,token,userId,cat,tag,offset]
+
+#pragma 获得所有标签
+#define FINDALL_TAG [NSString stringWithFormat:@"%@article/findAllTag",LOCALHOST]
+
+#pragma 文章详情
+#define FINDBYID_ARTICLE(token,id)   [NSString stringWithFormat:@"%@article/findById?token=%@&id=%@",LOCALHOST,token,id]
+
+#pragma 文章点赞
+#define LIKE_ARTICLE(token,articleId)   [NSString stringWithFormat:@"%@article/like?token=%@&id=%@",LOCALHOST,token,articleId]
+
+#pragma 取消文章点赞
+#define UNLIKE_ARTICLE(token,articleId)   [NSString stringWithFormat:@"%@article/unlike?token=%@&id=%@",LOCALHOST,token,articleId]
+
+#pragma 收藏文章
+#define COLLECT_ARTICLE(token,articleId)   [NSString stringWithFormat:@"%@article/collect?token=%@&id=%@",LOCALHOST,token,articleId]
+
+#pragma 取消收藏文章
+#define UNCOLLECT_ARTICLE(token,articleId)   [NSString stringWithFormat:@"%@article/uncollect?token=%@&id=%@",LOCALHOST,token,articleId]
+
+#pragma 评论文章
+#define COMMENT_ARTICLE(token,articleId,data,targetUserId)   [NSString stringWithFormat:@"%@article/comment?token=%@&id=%@&data=%@&targetUserId=%@",LOCALHOST,token,articleId,data,targetUserId]
+
+#pragma 关注用户
+#define FOLLOW_USER(token,other)   [NSString stringWithFormat:@"%@user/follow?token=%@&other=%@",LOCALHOST,token,other]
+
+#pragma 取消关注用户
+#define UNFOLLOW_USER(token,other)   [NSString stringWithFormat:@"%@user/unfollow?token=%@&other=%@",LOCALHOST,token,other]
+
+#pragma 获取消息列表
+#define FIND_MESSAGE(token,ofset,autoResd,order,status,msgCat)   [NSString stringWithFormat:@"%@message/findAllMessage?token=%@&max=0&offset=%@&autoReaad=%@&order=%@&status=%@&msgCat=%@",LOCALHOST,token,ofset,autoResd,order,status,msgCat]
+
+#pragma  获得关注设备的实时数据
+#define FIND_DEVICE_REALTIMELOG(token,deviceId)   [NSString stringWithFormat:@"%@user/findDeviceRealTimeLog?token=%@&deviceId=%@",LOCALHOST,token,deviceId]
+
+#pragma  数据总览
+#define BUILD_REPORT(token,deviceId,date)   [NSString stringWithFormat:@"%@device/buildReport?token=%@&deviceId=%@&date=%@",LOCALHOST,token,deviceId,date]
+
+#pragma  评估报告
+#define BUILD_REPORT(token,deviceId,date)   [NSString stringWithFormat:@"%@device/buildReport?token=%@&deviceId=%@&date=%@",LOCALHOST,token,deviceId,date]
+
+#pragma  首页亲情榜及相应数据
+#define SELEEP_REPORT(token)   [NSString stringWithFormat:@"%@family/sleepReport?token=%@",LOCALHOST,token]
+
+#pragma 获取用户信息
+#define FIND_USERINFO(token,userId)   [NSString stringWithFormat:@"%@user/findUserInfoByUserId?token=%@&userId=%@",LOCALHOST,token,userId]
+
+#pragma 添加加某人为好友
+#define MAKES_FRIENDS(token,otherId,msg)   [NSString stringWithFormat:@"%@relation/save?token=%@&other=%@&msg=%@",LOCALHOST,token,otherId,msg]
+
+#pragma 同意加某人为好友
+#define MAKE_FRIENDS(token,relationId)   [NSString stringWithFormat:@"%@relation/approve?token=%@&id=%@",LOCALHOST,token,relationId]
+
+#pragma 删除好友关系
+#define DELETE_FRIENDS(token,relationId)   [NSString stringWithFormat:@"%@relation/delete?token=%@&id=%@",LOCALHOST,token,relationId]
+
+#pragma 拒绝加某人为好友
+#define DECLINE_FRIENDS(token,relationId)   [NSString stringWithFormat:@"%@relation/decline?token=%@&id=%@",LOCALHOST,token,relationId]
+
+#pragma 拉入黑名单
+#define ADDBLACKLIST(token,otherID)   [NSString stringWithFormat:@"%@relation/addBlacklist?token=%@&other=%@",LOCALHOST,token,otherID]
+
+#pragma 移除黑名单
+#define REMOVEBLACKLIST(token,otherID)   [NSString stringWithFormat:@"%@relation/removeBlacklist?token=%@&other=%@",LOCALHOST,token,otherID]
+
+#pragma 获取我的所有分组
+#define FINDALLGROUP(token)   [NSString stringWithFormat:@"%@userGroup/findAll?token=%@",LOCALHOST,token]
+
+#pragma 创建分组
+#define EDIT_GROUP(token,groupId,groupName)   [NSString stringWithFormat:@"%@userGroup/edit?token=%@&id=%@&name=%@",LOCALHOST,token,groupId,groupName]
+
+#pragma 编辑分组
+#define CREATE_GROUP(token,groupName)   [NSString stringWithFormat:@"%@userGroup/create?token=%@&name=%@",LOCALHOST,token,groupName]
+
+#pragma 删除分组
+#define DELETE_GROUP(token,groupId)   [NSString stringWithFormat:@"%@userGroup/delete?token=%@&id=%@",LOCALHOST,token,groupId]
+
+#pragma 更新用户关系--修改备注
+#define UPDATE_RELATION(token,otherId,marks,contact,relationship,description,userGroupId)   [NSString stringWithFormat:@"%@relation/update?token=%@&id=%@&mark=%@&contact=%@&relationship=%@&description=%@&userGroupId=%@",LOCALHOST,token,otherId,marks,contact,relationship,description,userGroupId]
+
+#pragma 获取联系人列表
+#define CONTACTlIST(token)   [NSString stringWithFormat:@"%@relation/contactList?token=%@",LOCALHOST,token]
+
+#pragma 获取亲情榜名单
+#define FAMILY(token)   [NSString stringWithFormat:@"%@family/list?token=%@",LOCALHOST,token]
+
+#pragma 添加用户到亲情榜名单
+#define ADD_FAMILY(token,other)   [NSString stringWithFormat:@"%@family/add?token=%@&other=%@",LOCALHOST,token,other]
+
+#pragma 设置亲情榜名单
+#define RELATION_MYFRIENDS(token)   [NSString stringWithFormat:@"%@relation/myFriends?token=%@",LOCALHOST,token]
+
+#pragma 移出亲情榜名单
+#define REMOVE_MYFRIENDS(token,other)   [NSString stringWithFormat:@"%@family/remove?token=%@&other=%@",LOCALHOST,token,other]
+
+//警告框
+#define ALERTVIEW(_info_) UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"友情提示" message:_info_ delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil]; \
+[alertView show];
+
+#ifndef __OPTIMIZE__
+#    define NSLog(s, ...)           NSLog( @"<%s : (%d)> %@",__FUNCTION__, __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
+#else
+#    define NSLog(...)              ((void)0)
+#endif
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* PrefixHeader_pch */

@@ -1,0 +1,297 @@
+//
+//  XYSViewController.m
+//  moonletScience
+//
+//  Created by Zhuge_Su on 16/4/5.
+//  Copyright © 2016年 moonletScience. All rights reserved.
+//
+
+#import "XYSViewController.h"
+#import "PulisherViewController.h"
+#import "InfoRecordTableViewCell.h"
+#import "ReportViewController.h"
+#import "PersonInfoViewController.h"
+
+@interface XYSViewController ()<UITableViewDataSource,UITableViewDelegate>
+{
+    UITableView *_tableView;
+    UIButton *_careBtn;
+    UILabel *_numLable;
+
+}
+@end
+
+@implementation XYSViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor whiteColor];
+    [self createNavBar];
+    [self creatBackgView];
+    [self creatTableView];
+}
+
+
+
+
+-(void)createNavBar
+{
+#pragma mark - 修改状态栏的简便方法
+    //状态栏设置
+    UIView *statusBarView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, 20)];
+    statusBarView.backgroundColor=[UIColor blackColor];
+    [self.view addSubview:statusBarView];
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    
+    //导航栏图片
+    UIImageView *navBar = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, WIDTH, 50)];
+    navBar.userInteractionEnabled = YES;
+    //navBar.image = [UIImage imageNamed:@"navbg.png"];
+    navBar.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:navBar];
+    
+    //导航栏字体
+    UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(WIDTH / 2 - 50 , 10, 100, 30)];
+    title.text = @"小月说";
+    title.textColor = TEXTCOLOR;
+    title.font = [UIFont systemFontOfSize:18];
+    title.textAlignment = NSTextAlignmentCenter;
+    [navBar addSubview:title];
+    
+    //导航返回键
+    UIButton *fanHuiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [fanHuiBtn setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    fanHuiBtn.frame = CGRectMake(0, 0, 100, 50);
+    [fanHuiBtn setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 60)];
+    [fanHuiBtn addTarget:self action:@selector(fanhui) forControlEvents:UIControlEventTouchUpInside];
+    //fanHuiBtn.backgroundColor = [UIColor blackColor];
+    [navBar addSubview:fanHuiBtn];
+    
+    //发布按钮
+    UIButton *writeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    writeBtn.frame = CGRectMake(WIDTH-50, 13, 20, 20);
+    //writeBtn.backgroundColor = [UIColor redColor];
+    [writeBtn setImage:[UIImage imageNamed:@"fatie.png"] forState:UIControlStateNormal];
+    //[writeBtn setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 35, 35)];
+    [writeBtn addTarget:self action:@selector(publish) forControlEvents:UIControlEventTouchUpInside];
+    [navBar addSubview:writeBtn];
+}
+
+- (void)fanhui
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)publish
+{
+    PulisherViewController *publish = [[PulisherViewController alloc]init];
+    [self.navigationController pushViewController:publish animated:YES];
+}
+
+#pragma mark - 背景视图
+- (void)creatBackgView{
+    //背景
+    UIView *backGroudView = [[UIView alloc]initWithFrame:CGRectMake(0,70, WIDTH, HEIGHT/2-80)];
+    backGroudView.backgroundColor = [UIColor grayColor];
+    [self.view addSubview:backGroudView];
+    
+    //左上角label
+    NSArray *arr = @[@"宁波车宝宝公司",@"汽车行业",@"38岁 男",@"总经理"];
+    for (int i = 0; i < 4; i++) {
+        UILabel *perInfo = [[UILabel alloc]initWithFrame:CGRectMake(10, 10*(i+1), 60, 10)];
+        perInfo.text = arr[i];
+        perInfo.textColor = TEXTCOLOR;
+        perInfo.font = [UIFont systemFontOfSize:8];
+//        perInfo.textAlignment = NSTextAlignmentCenter;
+        [backGroudView addSubview:perInfo];
+    }
+   
+    
+    //右下角头像
+    UIButton *ImageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    ImageBtn.frame = CGRectMake(WIDTH-74, HEIGHT/2-80-74+5, 64, 64);
+    ImageBtn.backgroundColor = [UIColor yellowColor];
+    [ImageBtn setBackgroundImage:[UIImage imageNamed:@"add_head_photo.png"] forState:UIControlStateNormal];
+    ImageBtn.layer.cornerRadius = 3;
+    [backGroudView addSubview:ImageBtn];
+    
+    
+    //左下角推荐指数
+    UILabel *tuiLable = [[UILabel alloc]initWithFrame:CGRectMake(0, HEIGHT/2-80-10-20, 100, 20)];
+    tuiLable.backgroundColor = GREENCOLOR;
+    tuiLable.text = @"  推荐指数 300";
+    tuiLable.textColor = WHITECOLOR;
+    tuiLable.layer.cornerRadius = 2;
+    tuiLable.clipsToBounds =YES;
+    tuiLable.textAlignment = NSTextAlignmentCenter;
+    tuiLable.font = [UIFont systemFontOfSize:13];
+    [backGroudView addSubview:tuiLable];
+    
+    //右下方关注数
+    UILabel *numLable = [[UILabel alloc]initWithFrame:CGRectMake(WIDTH-74-10-30, HEIGHT/2-80-10-20, 30, 20)];
+    numLable.backgroundColor = [UIColor clearColor];
+    numLable.text = @"222";
+    numLable.textAlignment = NSTextAlignmentCenter;
+    [numLable setFont:[UIFont systemFontOfSize:10]];
+    [backGroudView addSubview:numLable];
+    
+    //右下方关注
+    UIButton *careBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    careBtn.frame = CGRectMake(WIDTH-74-10-30-40, HEIGHT/2-80-10-20, 40, 20);
+    careBtn.backgroundColor = REDCOLOR;
+    [careBtn setTitle:@"关注" forState:UIControlStateNormal];
+    [careBtn setTitleColor:TEXTCOLOR forState:UIControlStateNormal];
+//    [careBtn setFont:[UIFont systemFontOfSize:10]];
+    careBtn.titleLabel.font = [UIFont systemFontOfSize:10];
+    careBtn.layer.cornerRadius = 2;
+    careBtn.clipsToBounds = YES;
+    [backGroudView addSubview:careBtn];
+}
+
+
+#pragma mark - tableView 展示以往个人发帖记录
+- (void)creatTableView{
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, HEIGHT/2-10, WIDTH, HEIGHT/2+10)];
+    _tableView.separatorStyle = NO;
+    //    _tableView.backgroundColor = BGCOLOR;
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
+    [self.view addSubview:_tableView];
+    
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 1;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 100;
+}
+
+- (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *cellID = @"InfoRecordTableViewCell";
+    InfoRecordTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil) {
+        cell = [[[NSBundle mainBundle]loadNibNamed:cellID owner:self options:nil]lastObject];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    cell.pinglunLab.text = @"100";
+    cell.dianzanLab.text = @"1722434";
+    cell.timeLab.text = @"5分钟前";
+    cell.moonNunLab.text = @"123333";
+    
+    [cell.shareBtn addTarget:self action:@selector(shareBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [cell.dianzanBtn addTarget:self action:@selector(dianzanBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [cell.reportBtn addTarget:self action:@selector(reportBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    return cell;
+}
+
+- (void)shareBtnClick{
+    
+}
+
+- (void)dianzanBtnClick{
+    
+}
+
+- (void)reportBtnClick{
+    ReportViewController *report = [[ReportViewController alloc]init];
+    [self.navigationController pushViewController:report animated:YES];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 130)];
+    //    footView.backgroundColor = [UIColor yellowColor];
+    [_tableView addSubview:footView];
+    
+    
+    NSArray *monthArr = @[@"3月",@"2月",@"1月",@"2015年"];
+    for (int i = 0; i < 4; i++) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.frame = CGRectMake(10, 10+30*i, WIDTH-20, 25);
+        //        btn.backgroundColor = WHITECOLOR;
+        //        btn.layer.cornerRadius = 2;
+        //        btn.layer.shadowOffset = CGSizeMake(1, 1);
+        //        btn.layer.shadowOpacity= 0.5;
+        //        btn.layer.shadowColor = [UIColor blackColor].CGColor;
+        
+        //给按钮加一个白色的板框
+        btn.layer.borderColor = LINECOLOR.CGColor;
+        btn.layer.borderWidth = 1.0f;
+        //给按钮设置弧度,这里将按钮变成了圆形
+        btn.layer.cornerRadius = 3;
+        btn.layer.masksToBounds = YES;
+        //        btn.clipsToBounds = YES;
+        [footView addSubview:btn];
+        
+        UILabel *monthLab = [[UILabel alloc]initWithFrame:CGRectMake(10, 3, 60, 20)];
+        monthLab.text = monthArr[i];
+        monthLab.font = [UIFont systemFontOfSize:12];
+        monthLab.textColor = TEXTCOLOR;
+        [btn addSubview:monthLab];
+        
+        UIButton *spreadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        spreadBtn.frame = CGRectMake(WIDTH-20-10-10, 7, 10, 10);
+        spreadBtn.layer.cornerRadius = 5;
+        spreadBtn.clipsToBounds = YES;
+        [spreadBtn setBackgroundImage:[UIImage imageNamed:@"liebiao_jiantou.png"] forState:UIControlStateNormal];
+        [btn addSubview:spreadBtn];
+        
+    }
+    
+    
+    
+    return footView;
+}
+
+
+- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 130;
+}
+
+
+- (void)careBtnClick:(UIButton *)sender{
+    sender.selected = !sender.selected;
+    if (sender.selected == NO) {
+        _careBtn.backgroundColor = BGCOLOR;
+        [_careBtn setTitle:@"已关注" forState:UIControlStateNormal];
+        _numLable.text = @"256";
+    }else{
+        _careBtn.backgroundColor = REDCOLOR;
+        [_careBtn setTitle:@"关注" forState:UIControlStateNormal];
+        _numLable.text = @"255";
+    }
+}
+
+- (void)InfoBtnClick{
+    PersonInfoViewController *person = [[PersonInfoViewController alloc]init];
+    [self.navigationController pushViewController:person animated:YES];
+}
+
+
+
+
+
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

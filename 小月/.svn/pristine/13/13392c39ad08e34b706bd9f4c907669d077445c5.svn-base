@@ -1,0 +1,86 @@
+//
+//  HLF-PrefixHeader.pch
+//  moonletScience
+//
+//  Created by Zhuge_Su on 16/5/5.
+//  Copyright © 2016年 moonletScience. All rights reserved.
+//
+
+#ifndef HLF_PrefixHeader_pch
+#define HLF_PrefixHeader_pch
+
+
+#pragma mark - size
+
+#import <ShareSDK/ShareSDK.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import <ShareSDKUI/ShareSDK+SSUI.h>
+
+#import "WeiboSDK.h"
+
+
+#define kWeiXinAppId         @"wx66b8aa5bd7630c85"
+#define kWeiXinAppSecret     @"bf7866dc93891c3c3362365211b5ad6f"
+#define kWeiXinAccessToken   @"WeiXinAccessToken"
+#define kWeiXinOpenId        @"WeiXinOpenId"
+#define kWeiXinRefreshToken  @"WeiXinRefreshToken"
+
+
+#define LOCALADD @"http://192.168.1.120:8080/"
+
+#pragma SINNA第三方登录
+#define SINALOGIN_URL(token) [NSString stringWithFormat:@"%@pillow-web/user/weiboLogin?token=%@",LOCALADD,token]
+
+#pragma QQ第三方登录
+#define QQLOGIN_URL(token) [NSString stringWithFormat:@"%@pillow-web/user/weiboLogin?token=%@",LOCALADD,token]
+
+#pragma Wechat第三方登录
+#define WEILOGIN_URL(openid) [NSString stringWithFormat:@"%@pillow-web/user/weixinLogin?openid=%@",LOCALADD,openid]
+
+#pragma 账户绑定
+#define ACCOUNT_BINDING(token) [NSString stringWithFormat:@"%@pillow-web/user/getBinding?token=%@",LOCALADD,token]
+
+#pragma SINA绑定
+#define SINABINDING_URL(token,credentialtoken) [NSString stringWithFormat:@"%@pillow-web/user/weiboAdd?token=%@&access_token=%@",LOCALADD,token,credentialtoken]
+
+#pragma QQ绑定
+#define QQBINDING_URL(token,credentialtoken) [NSString stringWithFormat:@"%@pillow-web/user/qqAdd?token=%@&access_token=%@",LOCALADD,token,credentialtoken]
+
+#pragma SINA解绑
+#define SINAUNBINDING_URL(token,credentialtoken) [NSString stringWithFormat:@"%@pillow-web/user/weiboDel?token=%@&access_token=%@",LOCALADD,token,credentialtoken]
+
+#pragma QQ解绑
+#define QQUNBINDING_URL(token,credentialtoken) [NSString stringWithFormat:@"%@pillow-web/user/qqDel?token=%@&access_token=%@",LOCALADD,token,credentialtoken]
+
+#pragma 微信绑定
+#define WECHATBINDING_URL(token,openid) [NSString stringWithFormat:@"%@pillow-web/user/weixinAdd?token=%@&openid=%@",LOCALADD,token,openid]
+
+#pragma 微信解绑
+#define WECHATUNBINDING_URL(token,openid) [NSString stringWithFormat:@"%@pillow-web/user/weixinDel?token=%@&openid=%@",LOCALADD,token,openid]
+
+#pragma 邮件发送
+#define MAILSEND_URL(token,mail) [NSString stringWithFormat:@"%@pillow-web/user/mailSend?token=%@&mail=%@",LOCALADD,token,mail]
+
+#pragma 邮件绑定
+#define MAILBINDING_URL(token,code) [NSString stringWithFormat:@"%@pillow-web/user/mailAdd?token=%@&code=%@",LOCALADD,token,code]
+
+#pragma 邮件解绑
+#define MAILUNBINDING_URL(token,code) [NSString stringWithFormat:@"%@pillow-web/user/mailDel?token=%@&code=%@",LOCALADD,token,code]
+
+#pragma 手机绑定
+#define PHONENUMBINDING_URL(token,pass,code) [NSString stringWithFormat:@"%@pillow-web/user/phoneAdd?token=%@&pass=%@&code=%@",LOCALADD,token,pass,code]
+
+#pragma 发送验证码
+#define SMSSEND_URL(token,phone) [NSString stringWithFormat:@"%@pillow-web/user/sendNote?token=%@&phone=%@",LOCALADD,token,phone]
+
+#pragma 手机更换
+#define PHONENUMCHANGE_URL(token,code) [NSString stringWithFormat:@"%@pillow-web/user/phoneDel?token=%@&code=%@",LOCALADD,token,code]
+
+#define BLACKTEXTCOLOR [UIColor colorWithRed:85/255.0 green:95/255.0 blue:100/255.0 alpha:1.0]
+
+
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* HLF_PrefixHeader_pch */
